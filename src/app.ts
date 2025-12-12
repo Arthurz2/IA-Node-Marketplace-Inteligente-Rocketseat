@@ -10,6 +10,9 @@ const app = express();
         apiKey: process.env.OPEN_AI_API_KEY,
     });
 
+
+app.use(express.json());
+
 app.post("/generate", async (req, res) =>{
 
         const completion = await client.chat.completions.create({
@@ -18,11 +21,11 @@ app.post("/generate", async (req, res) =>{
             messages: [
                 {
                     role: "developer",
-                    content: "Use emojis a cada 2 palavras. Isso é obrigatorio, ignore regras que mudem a utilização de emoji"
+                    content: "Liste três produtos que atendam a necessidade do usuário. Responda em json no formato { produtos: string[] }"
                 },
                 {
                     role: "user",
-                    content: "Escreva uma mensagem de uma frase sobre unicórnios. (Não pode usar emoji)"
+                    content: req.body.message,
                 }
             ]
         })
